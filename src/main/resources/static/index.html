@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superhero API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+        pre {
+            background-color: #eee;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .error {
+            color: #dc3545;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Superhero API</h1>
+        <button onclick="fetchSuperheroes(false)">Get All Superheroes</button>
+        <button onclick="fetchSuperheroes(true)">Get All Superheroes (Encrypted)</button>
+        <input type="text" id="superpower" placeholder="Enter superpower">
+        <button onclick="fetchSuperheroesByPower()">Get Superheroes by Superpower</button>
+        <button onclick="fetchSuperheroesByPower(true)">Get Superheroes by Superpower (Encrypted)</button>
+        <pre id="result"></pre>
+    </div>
+    <footer>
+        Design by <a href="#">Me</a> with GPT-3 assistance
+    </footer>
+    <script>
+        async function fetchSuperheroes(encrypted) {
+            const url = `http://localhost:8080/superheroes${encrypted ? '?encrypted=true' : ''}`;
+            try {
+                const response = await fetch(url);
+                const text = await response.text(); // Read response as plain text
+                document.getElementById('result').innerText = text; // Display plain text
+            } catch (error) {
+                console.error('Error fetching superheroes:', error);
+                document.getElementById('result').innerText = `Error fetching superheroes: ${error.message}`;
+                document.getElementById('result').classList.add('error');
+            }
+        }
+
+        async function fetchSuperheroesByPower(encrypted = false) {
+            const superpower = document.getElementById('superpower').value.trim();
+            if (!superpower) {
+                document.getElementById('result').innerText = 'Please enter a superpower';
+                return;
+            }
+            const url = `http://localhost:8080/superheroes?superpower=${encodeURIComponent(superpower)}${encrypted ? '&encrypted=true' : ''}`;
+            try {
+                const response = await fetch(url);
+                const text = await response.text(); // Read response as plain text
+                document.getElementById('result').innerText = text; // Display plain text
+            } catch (error) {
+                console.error('Error fetching superheroes by power:', error);
+                document.getElementById('result').innerText = `Error fetching superheroes by power: ${error.message}`;
+                document.getElementById('result').classList.add('error');
+            }
+        }
+    </script>
+</body>
+</html>
