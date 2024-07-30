@@ -12,13 +12,13 @@ docker run -p 8080:8080 superhero-app
 
 # Example curl requests:
 # 1. Get all superheroes
-curl http://localhost:8080/api/superheroes
+curl -X GET "http://localhost:8080/superheroes"
 
 # 2. Get all superheroes (encrypted)
-curl http://localhost:8080/api/superheroes/encrypted
+curl -X GET "http://localhost:8080/superheroes?encrypted=true"
 
 # 3. Get superheroes by superpower
-curl http://localhost:8080/api/superheroes/superpower/flight
+curl -X GET "http://localhost:8080/superheroes?superpower=flight"
 
 # 4. Get superheroes by superpower (encrypted)
-curl http://localhost:8080/api/superheroes/superpower/encrypted/flight
+curl -X GET "http://localhost:8080/superheroes?superpower=flight&encrypted=true"
